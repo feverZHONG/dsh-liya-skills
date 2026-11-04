@@ -1,0 +1,25 @@
+{
+  "comment": "模型可见的技能名单 = 每轮进上下文的那批。其余技能仍然可被阁下用 /技能名 调用，只是不占上下文。改完保存即生效。",
+  "modelVisible": [
+    "dsh-plugin-dev",
+    "skill-curation",
+    "knowledge-persistence",
+    "dev-workflow",
+    "debug",
+    "source-code-investigation",
+    "environment-hygiene",
+    "info-hunt",
+    "quick-fact-check",
+    "news-verification",
+    "link-safety-check",
+    "documents",
+    "diary-writer",
+    "record-officer-daily",
+    "persona-authoring",
+    "vision-recognition-traps",
+    "video-analysis",
+    "platform-content-extraction",
+    "image-batch-archive",
+    "location"
+  ]
+}

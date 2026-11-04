@@ -1,0 +1,14 @@
+# 依赖与产物
+node_modules/
+*.tgz
+dist/
+
+# 编辑器/系统
+.vscode/
+.idea/
+Thumbs.db
+desktop.ini
+.DS_Store
+
+# 本地状态（技能库内容属于工作区，不进本仓库）
+*.log

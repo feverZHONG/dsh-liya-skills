@@ -1,0 +1,5 @@
+# dsh-liya-skills —— 挂载条目
+# 正式安装（profile bundles 里加了本包）时用这个；临时/本地直挂用 profile 补丁里的 file:// 写法。
+- insert:
+    - id: skill-liya-skills
+      name: dsh-liya-skills

@@ -1,0 +1,8 @@
+本仓库的**文档正文**（README 及注释性文字）采用
+[Creative Commons Attribution 4.0 International (CC BY 4.0)](https://creativecommons.org/licenses/by/4.0/deed.zh)
+许可：可自由转载、改编，需署名并注明来源。
+
+**代码**（`index.js`、`package.json`、`cordis.patch.yml`、`curated.json` 等）仍走
+仓库根目录的 [MIT License](./LICENSE)。
+
+Copyright (c) 2026 莉娅 (feverZHONG)
