@@ -1,18 +1,24 @@
 {
   "name": "dsh-liya-skills",
-  "version": "0.1.0",
-  "description": "莉娅技能库接入 DSH skill 系统：把工作区 skills/ 注册成 SkillProvider，精选技能进模型目录，其余留给用户 /技能名 调用。适配 DSH 0.2.1-rc.2。",
+  "version": "0.2.0",
+  "description": "莉娅技能库接入 DSH skill 系统 + 设置页技能管理：把工作区 skills/ 注册成 SkillProvider，精选进模型目录、其余 /技能名 调用；设置页可从指定 GitHub 用户的公开仓生成「适配稿」→ 人工确认 → 应用。适配 DSH 0.2.1-rc.2。",
   "type": "module",
   "main": "index.js",
   "exports": {
     ".": {
       "default": "./index.js"
     },
+    "./client": {
+      "default": "./client.js"
+    },
     "./cordis.patch.yml": "./cordis.patch.yml",
     "./package.json": "./package.json"
   },
   "files": [
     "index.js",
+    "host",
+    "client.js",
+    "client",
     "curated.json",
     "cordis.patch.yml",
     "README.md",
@@ -23,9 +29,18 @@
   "dsh": {
     "bundle": {
       "patch": "./cordis.patch.yml"
+    },
+    "client": {
+      "inject": [
+        "@deepseek-ai/dsh-client-ui-slots",
+        "@deepseek-ai/dsh-client-runtime"
+      ],
+      "platform": "web"
     }
   },
   "peerDependencies": {
-    "@deepseek-ai/cordis": "~4.0.5"
+    "@deepseek-ai/cordis": "~4.0.5",
+    "@deepseek-ai/dsh-client-ui-slots": "0.2.1-rc.2",
+    "@deepseek-ai/dsh-client-runtime": "0.2.1-rc.2"
   }
 }

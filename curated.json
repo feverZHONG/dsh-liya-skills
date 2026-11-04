@@ -20,6 +20,7 @@
     "video-analysis",
     "platform-content-extraction",
     "image-batch-archive",
-    "location"
+    "location",
+    "dsh-runtime-ops"
   ]
 }

@@ -1,6 +1,6 @@
 # dsh-liya-skills
 
-**v0.1.0** · 适配 DSH **0.2.1-rc.2**（桌面版）· 零第三方依赖
+**v0.2.0** · 适配 DSH **0.2.1-rc.2**（桌面版）· 零第三方依赖
 
 把工作区 `skills/` 里的技能库（一堆 `SKILL.md`）接进 DSH 原生的 skill 系统：
 `skill` 工具能加载、每轮技能目录里能看见、用 `/技能名` 能直接点名。
@@ -26,7 +26,12 @@ DSH 的 `skill-filesystem` 只认这几个目录：项目根 `.dsh/skills`、`.a
 # 1. 装进 profile（pnpm 活链接 + 自动追加到 dsh.profile.bundles）
 #    也可以在 DSH 设置页 / plugin_manager 里 install_bundle，target 填插件目录绝对路径
 dsh plugin --profile <profile> add "<插件目录绝对路径>"
+
+# 或者用发布包（tgz 与仓库 Releases/构建产物同内容；本机在 dist/ 里）
+dsh plugin --profile <profile> add "<目录>/dsh-liya-skills-0.2.0.tgz"
 ```
+
+> 仓库：https://github.com/feverZHONG/dsh-liya-skills
 
 ```yaml
 # 2. profile 补丁（$DSH_HOME/profiles/<profile>/cordis.patch.yml）里指定技能库位置。
@@ -52,6 +57,29 @@ dsh plugin --profile <profile> add "<插件目录绝对路径>"
 ```
 
 （同一个插件**只能挂一次**：bundle 已装上就不要再留这条，否则 provider 重名报错。）
+
+## 设置页：技能管理（v0.2.0 新增）
+
+DSH **设置 → 莉娅技能**（`settings.section`，client 半）。作用：从指定 GitHub 用户的**公开仓库**同步技能到本地
+`skills/`，但**绝不盲覆盖**——先出「适配稿」，人工确认后才落盘。
+
+流程（页面上就是这三步）：
+
+1. 填 GitHub 用户（默认 `feverZHONG`）→ **扫描公开仓**：列用户所有公开仓，挑出带 `SKILL.md` 的，按 frontmatter `name` 对回本地同名技能，给出状态：`已是最新 / 可更新 / 仅远端有`。
+2. **生成适配稿**：远端文件落到 `skills/.incoming/<仓库名>/`，同时产出 `_adapt-report.json`：
+   - 自动改写（记进报告）：`python3`→`python`、`/opt/data/bin|scripts`→工作区 `bin|scripts`、CRLF→LF、frontmatter 折行说明压成单行；
+   - 待人工确认（只报告不改）：旧 Hermes 环境残留、POSIX 绝对路径/命令、旧工具名（credman/apiproxy/settingsScope）、本机绝对路径、缺 `tier`。
+3. **看报告 → 应用**：应用前 host 把本地技能整目录备份到 `skills/.backup/<技能>-<时间戳>/`，然后把适配稿拷进 `skills/<技能>/`，并写 `_upstream.json`（仓库、commit、应用时间、自动改写/待确认条数、备份路径）。
+
+铁律（2026-11-04 阁下定）：
+
+- **只处理公开仓库**：`private !== false` 或 `visibility !== 'public'` 一律拒绝（扫描阶段过滤，生成阶段还会再校验一次）。
+- **禁止只管备份+覆盖**：没有「应用适配稿」这一步，本地技能不会被改；页面上没有一键盲覆盖入口。
+- 数据通道走 **`gh` CLI**（`gh api`）：本机直连 HTTPS 被网络挡住（curl/node/PowerShell 都连不上），只有 gh 通；要求 gh 已登录。
+- 改 client 源码（`client/src/*`）后要 `node client/build.mjs` 重出 `client.js`，再**重启 DSH**；host 改 `index.js` / `host/*` 也要重启。
+
+右侧详情栏是 **markdown 预览**：自写零依赖渲染器 `client/src/md.js`（标题/段落/列表/表格/代码块/行内代码/粗斜体/链接/引用，容错半截代码块），
+右上「预览 ● / 原文」可切回 SKILL.md 源文本。
 
 ## 验证
 

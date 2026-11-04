@@ -17,9 +17,10 @@ import { readFile, readdir } from 'node:fs/promises'
 import { watchFile, unwatchFile, watch, realpathSync } from 'node:fs'
 import { dirname, join, resolve } from 'node:path'
 import { fileURLToPath } from 'node:url'
+import { registerSkillAdmin } from './host/skill-admin.js'
 
 export const name = 'dsh-liya-skills'
-export const inject = ['skills']
+export const inject = ['skills', 'webServer']
 
 const HERE = dirname(fileURLToPath(import.meta.url))
 /**
@@ -141,6 +142,10 @@ export function apply(ctx, config = {}) {
       },
     }
   })
+
+  // 设置页「莉娅技能管理」用的 host 路由：状态扫描 / 生成适配稿 / 应用 / 精选开关。
+  // 只处理公开仓库（private 一律拒绝），且**不自动覆盖**——先出适配稿，人工确认后才写本地。
+  registerSkillAdmin(ctx, { skillsRoot, curatedFile: CURATED_FILE })
 }
 
 /** 模型可见清单：curated.json 的 modelVisible；读不到就退回代码里的默认名单。 */
